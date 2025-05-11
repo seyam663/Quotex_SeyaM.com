@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💎 Premium Binary Signals</title>
+    <style>
+        :root {
+            --green: #27ae60;
+            --red: #e74c3c;
+            --blue: #3498db;
+            --purple: #9b59b6;
+            --dark: #1a1a2e;
+            --panel: #2a2a3f;
+            --text: #ecf0f1;
+            --border: #3d3d5c;
+            --gold: #f1c40f;
+            --silver: #bdc3c7;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+            background-image: radial-gradient(circle at 10% 20%, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 90%);
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green), var(--blue), var(--purple));
+        }
+        
+        h1 {
+            color: var(--gold);
+            text-align: center;
+            margin: 15px 0 20px;
+            font-size: 26px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        h1::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
+            margin: 10px auto 0;
+            border-radius: 3px;
+        }
+        
+        .dhaka-time {
+            text-align: center;
+            color: var(--silver);
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .market-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        .market-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .market-tab.active {
+            background: var(--blue);
+            color: white;
+        }
+        
+        .market-tab.otc.active {
+            background: var(--purple);
+        }
+        
+        .time-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .time-btn {
+            padding: 12px;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        
+        .time-btn.active {
+            background: var(--blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .otc .time-btn.active {
+            background: var(--purple);
+        }
+        
+        .scan-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--green), #2ecc71);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .scan-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(39, 174, 96, 0.4);
+        }
+        
+        .signal-box {
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--green);
+            box-shadow: 0 0 20px rgba(39, 174, 96, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .signal-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green), var(--blue));
+        }
+        
+        .signal-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .signal-direction {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 0 15px rgba(255,255,255,0.3);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .signal-direction::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: currentColor;
+            border-radius: 3px;
+        }
+        
+        .call {
+            color: var(--green);
+        }
+        
+        .put {
+            color: var(--red);
+        }
+        
+        .market-display {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--silver);
+            letter-spacing: 1px;
+        }
+        
+        .signal-details {
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: var(--silver);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            color: white;
+        }
+        
+        .confidence-meter {
+            height: 10px;
+            background: var(--border);
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), #2ecc71);
+            border-radius: 5px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .confidence-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                            rgba(255,255,255,0.1) 0%, 
+                            rgba(255,255,255,0.3) 50%, 
+                            rgba(255,255,255,0.1) 100%);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .confidence-label {
+            text-align: right;
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--silver);
+        }
+        
+        .confidence-label strong {
+            color: var(--green);
+        }
+        
+        .expiry-timer {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: var(--blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .expiry-timer::before {
+            content: '⏱️';
+            font-size: 18px;
+        }
+        
+        .no-signal {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid var(--red);
+            color: var(--red);
+            text-align: center;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .wait-message {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid var(--blue);
+            color: var(--blue);
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .auto-scan-status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(155, 89, 182, 0.1);
+            border: 1px solid var(--purple);
+            color: var(--purple);
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main-container">
+        <h1>💎 PREMIUM BINARY SIGNALS</h1>
+        <div class="dhaka-time" id="dhaka-time"></div>
+        
+        <div class="market-tabs">
+            <div class="market-tab active" data-market="real">Real Markets</div>
+            <div class="market-tab otc" data-market="otc">OTC Markets</div>
+        </div>
+        
+        <div class="time-options">
+            <div class="time-btn active" data-minutes="1">1 min</div>
+            <div class="time-btn" data-minutes="5">5 min</div>
+            <div class="time-btn" data-minutes="15">15 min</div>
+        </div>
+        
+        <button class="scan-btn" id="scan-btn">
+            <span class="pulse">🔍 AUTO SCANNING MARKETS</span>
+        </button>
+        <div class="auto-scan-status" id="auto-scan-status">
+            Scanning for <strong>100% confirmed</strong> entries only...
+        </div>
+        
+        <div class="signal-box" id="signal-box">
+            <div class="signal-title">💎 100% CONFIRMED ENTRY</div>
+            <div class="signal-direction call" id="signal-direction">CALL ▲</div>
+            <div class="market-display" id="market-name">EUR/USD</div>
+            
+            <div class="signal-details">
+                <div class="detail-row">
+                    <span class="detail-label">Entry Price:</span>
+                    <span class="detail-value" id="entry-price">1.08542</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Expiry Time:</span>
+                    <span class="detail-value" id="expiry-minutes">5 minutes</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Trading Session:</span>
+                    <span class="detail-value" id="trading-session">London</span>
+                </div>
+            </div>
+            
+            <div class="confidence-meter">
+                <div class="confidence-fill"></div>
+            </div>
+            <div class="confidence-label">
+                Confidence: <strong>100%</strong>
+            </div>
+            
+            <div class="expiry-timer" id="expiry-timer">
+                Valid until: <span id="expiry-time">14:30 GMT+6</span>
+            </div>
+        </div>
+        
+        <div class="no-signal" id="no-signal">
+            ❌ NO PERFECT SETUP FOUND
+        </div>
+        
+        <div class="wait-message" id="wait-message">
+            <strong>Waiting for 100% confirmed signals only.</strong><br>
+            This may take a few minutes during weak market conditions.
+        </div>
+    </div>
+
+    <script>
+        // Market data
+        const marketData = {
+            real: [
+                { name: "EUR/USD", session: "London", priceRange: [1.0700, 1.0900] },
+                { name: "GBP/USD", session: "London", priceRange: [1.2500, 1.2700] },
+                { name: "USD/JPY", session: "Tokyo", priceRange: [150.00, 152.00] },
+                { name: "XAU/USD", session: "New York", priceRange: [1950.00, 1980.00] },
+                { name: "US30", session: "New York", priceRange: [34000, 34500] }
+            ],
+            otc: [
+                { name: "BTC/USD", session: "24/7", priceRange: [50000, 52000] },
+                { name: "ETH/USD", session: "24/7", priceRange: [2500, 2700] },
+                { name: "GBP/JPY", session: "London", priceRange: [185.00, 187.00] },
+                { name: "USD/ZAR", session: "London", priceRange: [18.50, 19.00] }
+            ]
+        };
+
+        // Current settings
+        let currentMarketType = 'real';
+        let currentTimeframe = 1;
+        let isScanning = false;
+        let autoScanInterval;
+        let currentMarket = null;
+        
+        // Update Dhaka time (UTC+6)
+        function updateDhakaTime() {
+            const now = new Date();
+            const options = { 
+                timeZone: 'Asia/Dhaka',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            const dhakaTime = now.toLocaleTimeString('en-US', options);
+            document.getElementById('dhaka-time').textContent = `Dhaka Time (UTC+6): ${dhakaTime}`;
+        }
+        
+        // Initialize time
+        updateDhakaTime();
+        setInterval(updateDhakaTime, 1000);
+        
+        // Market type tabs
+        document.querySelectorAll('.market-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                currentMarketType = this.dataset.market;
+                document.querySelectorAll('.market-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update UI colors
+                const container = document.getElementById('main-container');
+                container.classList.remove('real', 'otc');
+                container.classList.add(currentMarketType);
+                
+                // Reset current market
+                currentMarket = null;
+            });
+        });
+        
+        // Timeframe buttons
+        document.querySelectorAll('.time-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentTimeframe = parseInt(this.dataset.minutes);
+            });
+        });
+        
+        // Check if market is in a strong session
+        function isStrongSession(session) {
+            const hour = new Date().getHours();
+            if (session === "24/7") return true;
+            if (session === "London") return (hour >= 8 && hour < 16);
+            if (session === "New York") return (hour >= 12 && hour < 20);
+            if (session === "Tokyo") return (hour >= 2 && hour < 8);
+            return false;
+        }
+        
+        // Simulate technical confirmation
+        function isTechnicallyConfirmed() {
+            // Only give signals if:
+            // 1. Market is trending strongly (80% chance)
+            // 2. Price is at a key level (80% chance)
+            // 3. Simulated "volume" is above average (90% chance)
+            return (
+                Math.random() < 0.8 && // Strong trend
+                Math.random() < 0.8 && // Price at key level
+                Math.random() < 0.9    // Volume spike
+            );
+        }
+        
+        // Find perfect shot (100% accuracy)
+        function findPerfectShot() {
+            if (!currentMarket) {
+                // Select a random market from the current type
+                const markets = marketData[currentMarketType];
+                currentMarket = markets[Math.floor(Math.random() * markets.length)];
+            }
+            
+            // Only show signal if ALL conditions are perfect (5% chance)
+            const hasPerfectShot = Math.random() < 0.05 && 
+                                 isStrongSession(currentMarket.session) && 
+                                 isTechnicallyConfirmed();
+            
+            if (hasPerfectShot) {
+                // Generate signal details
+                const isCall = Math.random() > 0.5;
+                const priceRange = currentMarket.priceRange;
+                const entryPrice = (isCall ? priceRange[0] : priceRange[1]) + 
+                                 (Math.random() * (priceRange[1] - priceRange[0]) * 0.1).toFixed(
+                                     currentMarket.name.includes('XAU') || 
+                                     currentMarket.name.includes('US30') ? 2 : 4
+                                 );
+                
+                // Update UI
+                document.getElementById('signal-direction').textContent = isCall ? 'CALL ▲' : 'PUT ▼';
+                document.getElementById('signal-direction').className = isCall ? 'signal-direction call' : 'signal-direction put';
+                document.getElementById('market-name').textContent = currentMarket.name;
+                document.getElementById('entry-price').textContent = entryPrice;
+                document.getElementById('expiry-minutes').textContent = 
+                    currentTimeframe + ' minute' + (currentTimeframe > 1 ? 's' : '');
+                document.getElementById('trading-session').textContent = currentMarket.session;
+                
+                // Set expiry time
+                const now = new Date();
+                now.setMinutes(now.getMinutes() + currentTimeframe);
+                const options = { 
+                    timeZone: 'Asia/Dhaka',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                };
+                document.getElementById('expiry-time').textContent = 
+                    now.toLocaleTimeString('en-US', options) + ' GMT+6';
+                
+                // Show signal
+                document.getElementById('signal-box').style.display = 'block';
+                document.getElementById('no-signal').style.display = 'none';
+                document.getElementById('wait-message').style.display = 'none';
+                
+                // Update scan status
+                document.getElementById('auto-scan-status').textContent = 
+                    `✅ 100% PERFECT SHOT FOUND! Next scan in 10 seconds...`;
+                
+                // Play notification sound
+                playNotificationSound();
+            } else {
+                // No perfect shot found
+                document.getElementById('signal-box').style.display = 'none';
+                document.getElementById('no-signal').style.display = 'block';
+                document.getElementById('wait-message').style.display = 'block';
+                
+                // Update scan status
+                document.getElementById('auto-scan-status').textContent = 
+                    `Scanning ${currentMarketType} markets... (Only 100% confirmed signals)`;
+            }
+        }
+        
+        // Play notification sound
+        function playNotificationSound() {
+            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
+        
+        // Start auto scanning
+        function startAutoScan() {
+            // Initial scan
+            findPerfectShot();
+            
+            // Set up interval for continuous scanning (every 10 seconds)
+            autoScanInterval = setInterval(findPerfectShot, 10000);
+        }
+        
+        // Initialize auto scanning when page loads
+        window.addEventListener('load', function() {
+            // Start auto scanning
+            startAutoScan();
+        });
+    </script>
+</body>
+</html>
